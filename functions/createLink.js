@@ -1,17 +1,19 @@
 const formattedResponse = require("./utils/formattedResponse");
-const { GET_LINKS } = require("./utils/linkQueries");
+const { CREATE_LINK } = require("./utils/linkQueries");
 const sendQuery = require("./utils/sendQuery");
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "GET") {
+  if (event.httpMethod !== "POST") {
     return formattedResponse(405, { err: "Method not supported" });
   }
 
-  try {
-    const res = await sendQuery(GET_LINKS);
-    const data = res.allLinks.data;
+  const requestBody = JSON.parse(event.body);
+  const variables = { ...requestBody, archived: false };
 
-    return formattedResponse(200, data);
+  try {
+    const { createLink: createdLink } = await sendQuery(CREATE_LINK, variables);
+
+    return formattedResponse(200, createdLink);
   } catch (error) {
     console.error(error);
 

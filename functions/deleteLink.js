@@ -1,17 +1,18 @@
 const formattedResponse = require("./utils/formattedResponse");
-const { GET_LINKS } = require("./utils/linkQueries");
+const { DELETE_LINK } = require("./utils/linkQueries");
 const sendQuery = require("./utils/sendQuery");
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "GET") {
+  if (event.httpMethod !== "DELETE") {
     return formattedResponse(405, { err: "Method not supported" });
   }
 
-  try {
-    const res = await sendQuery(GET_LINKS);
-    const data = res.allLinks.data;
+  const { id } = JSON.parse(event.body);
 
-    return formattedResponse(200, data);
+  try {
+    const { deleteLink: deletedLink } = await sendQuery(DELETE_LINK, { id });
+
+    return formattedResponse(200, deletedLink);
   } catch (error) {
     console.error(error);
 
