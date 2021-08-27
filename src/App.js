@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useEffect } from "react";
+import LinkList from "./components/LinkList";
+import LinkForm from "./components/LinkForm";
+import { useAppContext } from "./contexts/appContext";
 
 function App() {
+  const { loadLinks, showForm, toggleForm } = useAppContext();
+
+  useEffect(() => {
+    loadLinks();
+  }, [loadLinks]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container py-5">
+      <h1 className="text-center mb-5">
+        <span> List O' Link</span>
+      </h1>
+
+      <div className="text-center">
+        <button className="btn btn-primary" onClick={() => toggleForm()}>
+          Create Link
+        </button>
+      </div>
+
+      {showForm && <LinkForm />}
+
+      <LinkList />
     </div>
   );
 }

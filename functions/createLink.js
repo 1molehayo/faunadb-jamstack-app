@@ -7,8 +7,8 @@ exports.handler = async (event) => {
     return formattedResponse(405, { err: "Method not supported" });
   }
 
-  const requestBody = JSON.parse(event.body);
-  const variables = { ...requestBody, archived: false };
+  const { name, url, description } = JSON.parse(event.body);
+  const variables = { name, url, description, archived: false };
 
   try {
     const { createLink: createdLink } = await sendQuery(CREATE_LINK, variables);
