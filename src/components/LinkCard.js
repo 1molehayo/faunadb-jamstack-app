@@ -26,6 +26,7 @@ function LinkCard({ link }) {
     try {
       await axios.put("/deleteLink", JSON.stringify({ id }));
       refreshLinks();
+      togglePrompt();
     } catch (error) {
       console.error("AHHH", error);
     }
